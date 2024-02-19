@@ -33,31 +33,40 @@ if st.button("Predict Price"):
         ips=1
     else:
         ips=0
-    X_res=int(resolution.split("x")[0])
-    y_res=int(resolution.split("x")[1])
-    ppi=((X_res**2)+(y_res**2))**0.5/screen_size
-    query = np.array([company,Type,Ram,weight,touchscreen,ips,ppi,cpu,os,gpu,hdd,ssd])
+    
+    if screen_size<=0:
+        st.subheader("Screen Size Cant be zero or less than zero")
+    if weight<=0:
+        st.subheader(" Weight Cant be zero or less than zero")
+   
+    else:
 
-    query_data = {
-    'Company': [company],
-    'TypeName': [Type],
-    'Ram': [Ram],
-    'Weight': [weight],
-    'TouchScreen': [touchscreen],
-    'IPS': [ips],
-    'ppi': [ppi],
-    'CPU Brands': [cpu],
-    'os': [os],
-    'Gpu Brand': [gpu],
-    'HDD': [hdd],
-    'SSD': [ssd]
-    }
+        X_res=int(resolution.split("x")[0])
+        y_res=int(resolution.split("x")[1])
+        ppi=((X_res**2)+(y_res**2))**0.5/screen_size
+        query = np.array([company,Type,Ram,weight,touchscreen,ips,ppi,cpu,os,gpu,hdd,ssd])
 
-    query_df = pd.DataFrame(query_data)
 
-    prediction = float(round(np.exp(pipeline.predict(query_df)[0]),2))
+        query_data = {
+        'Company': [company],
+        'TypeName': [Type],
+        'Ram': [Ram],
+        'Weight': [weight],
+        'TouchScreen': [touchscreen],
+        'IPS': [ips],
+        'ppi': [ppi],
+        'CPU Brands': [cpu],
+        'os': [os],
+        'Gpu Brand': [gpu],
+        'HDD': [hdd],
+        'SSD': [ssd]
+        }
 
-    st.subheader(f"The Predicted Price For Your Laptop Is: {prediction}")
+        query_df = pd.DataFrame(query_data)
+
+        prediction = float(round(np.exp(pipeline.predict(query_df)[0]),2))
+
+        st.subheader(f"The Predicted Price For Your Laptop Is: {prediction}")
 
 
 
